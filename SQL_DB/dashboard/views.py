@@ -105,6 +105,45 @@ def get_specific_customer(request, c_id):
     orders = {row[0]: {'order_id': row[1], 'customer_id': row[2], 'product_id': row[3], 'quantity': row[4], 'order_date': row[5], 'status': row[6] } for row in res}
     return JsonResponse(orders)
 
+
+def orders_sales(request, p_id):
+    """Generate JSON file for income based on single product
+
+    Args:
+        p_id (int): Product id for which you want to generate json
+
+    Returns:
+        JSON: JSON file with income and date fields
+    """
+    query = f'SELECT ROUND(SUM(quantity) * products.price, 2) AS money_gain,  DATE_FORMAT(order_date, "%Y-%m") AS date_of_order FROM orders JOIN products USING (product_id) WHERE product_id = {p_id} GROUP BY date_of_order ORDER BY date_of_order;'
+    res = sql_res(query)
+    sales = dict()
+    i = 0
+    for line in res:
+        sales[i] = {'income': line[0], 'date': line[1]}
+        i += 1
+    return JsonResponse(sales)
+
+
+def orders_by_month(request, p_id):
+    """Generate JSON file with qunatity sales of single product each month.
+
+    Args:
+        p_id (int): Product id for which you want to generate json
+
+    Returns:
+        JSON: JSON file with quantity and date fields
+    """
+    query = f'SELECT SUM(quantity), DATE_FORMAT(order_date, "%Y-%m") AS date_of_order FROM orders WHERE product_id = {p_id} GROUP BY date_of_order ORDER BY date_of_order;'
+    res = sql_res(query)
+    quant = dict()
+    i = 0
+    for line in res:
+        quant[i] = {'quantity': line[0], 'date': line[1]}
+        i += 1
+    return JsonResponse(quant)
+
+
 def project_general(request):
     try:
         customers_response = requests.get('http://127.0.0.1:8000/dashboard/data/customers', [])

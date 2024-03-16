@@ -145,7 +145,7 @@ function draw_chart() {
                         display: true,
                         text: 'Number of items bought'
                     },
-                    max: 4
+                    max: 10
                 }
             }
         }

@@ -1,0 +1,25 @@
+{% extends "main.html" %}
+{% load static %}
+{% block  content %}
+<link rel="stylesheet" href="{% static 'css/analytics_products.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+<div class="row analytics">
+    <div class="col">
+        <canvas id="chart_1" width="290" height="200"></canvas>
+    </div>
+    <div class="col">
+        <canvas id="chart_2" width="290" height="200"></canvas>
+    </div>
+    <div class="col">
+        <canvas id="chart_all" width="290" height="200"></canvas>
+    </div>
+</div>
+<div class="row analytics">
+    <div class="col">
+        <canvas id="season_chart" width="200" height="200"></canvas>
+    </div>
+</div>
+<script src="{% static 'js/products.js' %}"></script>
+{% endblock  %}
